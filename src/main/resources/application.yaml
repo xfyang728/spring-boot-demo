@@ -1,6 +1,23 @@
+server:
+  port: 7878
 spring:
   redis:
     host: localhost
     port: 6379
 #    password: 123456
     database: 0
+  datasource:
+    #druid连接池配置
+    type: com.alibaba.druid.pool.DruidDataSource
+    #PostgreSQL配置
+    url: jdbc:postgresql://127.0.0.1:5432/postgres
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    druid:
+      #SpringBoot因为默认是hikari数据源所以对于其他数据源默认是不注入这些属性的，需要手动配置
+      #druid数据源专有配置
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 600000

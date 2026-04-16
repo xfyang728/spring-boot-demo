@@ -9,8 +9,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.*;
 
 
 @Controller
@@ -34,6 +33,7 @@ public class WebSocket {
         sessionPool.forEach((key, value) -> {
         });
         System.out.println("【websocket消息】有新的连接，总数为:" + webSockets.size());
+        taskRun(code);
     }
 
     /**
@@ -43,6 +43,8 @@ public class WebSocket {
     public void onClose() {
         webSockets.remove(this);
         System.out.println("【websocket消息】连接断开，总数为:" + webSockets.size());
+        //取消任务
+        runnableFuture.cancel(true);
     }
 
     /**
@@ -85,4 +87,26 @@ public class WebSocket {
             }
         }
     }
+
+
+    ScheduledThreadPoolExecutor scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(2);
+    ScheduledFuture<?> runnableFuture = null;
+
+    private void taskRun(String code){
+        //提交一个2秒后才执行的runnable任务
+        //既然runnable无法返回结果,为什么还要有Future呢,因为我们可以通过Future进行取消任务等操作
+        runnableFuture = scheduledThreadPoolExecutor.scheduleAtFixedRate(() -> {
+            mySleep(500);
+            sendOneMessage(code, "This is runable task" + System.currentTimeMillis());
+        }, 0, 1, TimeUnit.SECONDS);
+    }
+
+    private void mySleep(int ms){
+        try {
+            TimeUnit.MILLISECONDS.sleep(ms);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
