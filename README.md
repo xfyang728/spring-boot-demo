@@ -1,6 +1,6 @@
 # Spring Boot Demo
 
-一个功能完整的 Spring Boot 演示项目，集成了 PostgreSQL 数据库、Redis 缓存、WebSocket 实时通信和 Vue.js 前端。
+一个功能完整的 Spring Boot 演示项目，集成了 PostgreSQL 数据库、AI SQL 生成、智能图表推荐和 Vue.js 前端。
 
 ## 技术栈
 
@@ -10,7 +10,7 @@
 - **数据库**: PostgreSQL
 - **连接池**: Druid
 - **缓存**: Redis
-- **实时通信**: WebSocket
+- **AI**: Ollama (Llama 3.2)
 - **工具库**: Hutool、Lombok
 
 ### 前端
@@ -55,6 +55,7 @@ spring-boot-demo/
 - Node.js 14+
 - PostgreSQL 12+
 - Redis 6+
+- Ollama (可选，用于 AI SQL 生成)
 
 ### 后端启动
 
@@ -80,12 +81,32 @@ npm run dev
 
 ## 主要功能
 
-### 控制器端点
+### AI SQL 生成
+- 使用自然语言描述查询需求
+- AI 自动生成 PostgreSQL SQL 语句
+- 自动执行查询并返回结果
+- 支持 SQL 验证和自动修正
+
+### 智能图表推荐
+- 自动分析查询结果数据结构
+- 智能推荐最适合的图表类型（柱状图、折线图、饼图）
+- 支持手动切换图表类型
+- 动态构建 ECharts 配置
+
+### 数据库特性
+- 动态 Schema 发现（自动获取表结构）
+- SQL 执行日志记录
+- 查询结果缓存
+- 支持按省份、日期、月份等多种维度统计
+
+### API 接口
 
 | 路径 | 方法 | 描述 |
 |------|------|------|
-| `/ai/query` | POST | AI 查询接口 |
-| `/demo/test` | GET | 测试接口 |
+| `/ai/query` | POST | AI 自然语言查询 |
+| `/ai/execute` | POST | 直接执行 SQL |
+| `/ai/validate` | POST | SQL 验证 |
+| `/ws` | WebSocket | 实时日志推送 |
 
 ### 数据库配置
 
@@ -106,8 +127,8 @@ npm run dev
 
 项目采用前后端分离架构：
 
-1. **后端** (Spring Boot) - 负责业务逻辑和数据处理
-2. **前端** (Vue.js) - 负责用户界面展示
+1. **后端** (Spring Boot) - 负责业务逻辑、数据处理和 AI 交互
+2. **前端** (Vue.js) - 负责用户界面、图表渲染和交互
 
 CORS 已配置，允许跨域请求。
 
