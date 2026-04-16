@@ -2,6 +2,8 @@
 
 一个功能完整的 Spring Boot 演示项目，集成了 PostgreSQL 数据库、AI SQL 生成、智能图表推荐和 Vue.js 前端。
 
+![AI SQL Query Helper](AI SQL query helper.png)
+
 ## 技术栈
 
 ### 后端
